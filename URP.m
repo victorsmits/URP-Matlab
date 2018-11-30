@@ -116,9 +116,9 @@ end
 
 % Etape 5
 % création des cofacteur posistif et negatif. il depende de l'index de la
-% variable qui a été sélectionner au par avant. 
+% variable qui a été sélectionner au par avant.
 % Pour le cofacteur Positif (cofP) on change la variable par un 1 logique
-% et on observe la sortie, pour le cofacteur négatif (cofN) on change 
+% et on observe la sortie, pour le cofacteur négatif (cofN) on change
 % la variable par un 0 logique et on observe à nouveau la sortie. Ensuite
 % on change la variable par un don't care dans les 2 matrices.
 cofP = zeros(size(L,1),nbrvar);
@@ -150,8 +150,8 @@ end
 % Etape 6
 cofP = URP(cofP,nbrvar);
 cofN = URP(cofN,nbrvar);
-% pour effectuer un ET logique 
-cofP(:,val) = ones(size(cofP,1),1); 
+% pour effectuer un ET logique
+cofP(:,val) = ones(size(cofP,1),1);
 cofN(:,val) = ones(size(cofN,1),1)*2;
 % pour effectuer un OU logique
 % j'effectue les vérification suivant afin d'éviter les warning d'execution
@@ -161,7 +161,7 @@ if isempty(cofP)
 elseif isempty(cofN)
     comp = cofP;
 else
-    comp = [cofP;cofN];
+    comp = [cofP;cofN]; % concaténation verticale des 2 matrices.
 end
 return;
 end
