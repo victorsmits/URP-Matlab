@@ -18,6 +18,8 @@ while i <= size(L,1)
 end
 
 % Etape 3
+% Complémentation du cube unique en utilisant la loi de Demorgan:
+% transformation des ET logique en OU logique; abc => a + b + c .
 if size(L,1) == 1
     nbrvarbis = nbrvar;
     comp = ones(nbrvarbis,nbrvar)*3;
@@ -25,6 +27,10 @@ if size(L,1) == 1
     m = 1; % colone
     while n <= nbrvarbis && m <= nbrvar
         switch L(1,m)
+            % Si une des variable n'est pas utilisé nous devons supprimer
+            % la ligne de la matrice qui la comprendrais normalement. Les
+            % autre variable vont avoir l'état opposé a leur état
+            % d'origine.
             case 3
                 comp(n,:)=[];
                 nbrvarbis = nbrvarbis-1;
@@ -39,8 +45,6 @@ if size(L,1) == 1
                 m= m+1;
         end
     end
-    return;
-end
 
 % Etape 4
 % check if f is biforme

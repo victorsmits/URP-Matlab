@@ -1,12 +1,12 @@
 function comp  = URP(L,nbrvar)
 
-%Etape 1
+% Etape 1
 if isempty(L)
     comp = ones(1,nbrvar)*3;
     return;
 end
 
-%Etape 2
+% Etape 2
 ADCC = ones(1,nbrvar)*3; % AllDontCareCube
 i = 1;
 while i <= size(L,1)
@@ -17,14 +17,20 @@ while i <= size(L,1)
     i=i+1;
 end
 
-%Etape 3
+% Etape 3
+% Complémentation du cube unique en utilisant la loi de Demorgan:
+% transformation des ET logique en OU logique; abc => a + b + c .
 if size(L,1) == 1
     nbrvarbis = nbrvar;
     comp = ones(nbrvarbis,nbrvar)*3;
-    n = 1; %ligne
-    m = 1; %colone
+    n = 1; % ligne
+    m = 1; % colone
     while n <= nbrvarbis && m <= nbrvar
         switch L(1,m)
+            % Si une des variable n'est pas utilisé nous devons supprimer
+            % la ligne de la matrice qui la comprendrais normalement. Les
+            % autre variable vont avoir l'état opposé a leur état
+            % d'origine.
             case 3
                 comp(n,:)=[];
                 nbrvarbis = nbrvarbis-1;
@@ -39,10 +45,8 @@ if size(L,1) == 1
                 m= m+1;
         end
     end
-    return;
-end
 
-%Etape 4
+% Etape 4
 % check if f is biforme
 % bif = ones(size(L,1),1);
 status = zeros(1,nbrvar);
@@ -116,9 +120,9 @@ end
 
 % Etape 5
 % création des cofacteur posistif et negatif. il depende de l'index de la
-% variable qui a été sélectionner au par avant. 
+% variable qui a été sélectionner au par avant.
 % Pour le cofacteur Positif (cofP) on change la variable par un 1 logique
-% et on observe la sortie, pour le cofacteur négatif (cofN) on change 
+% et on observe la sortie, pour le cofacteur négatif (cofN) on change
 % la variable par un 0 logique et on observe à nouveau la sortie. Ensuite
 % on change la variable par un don't care dans les 2 matrices.
 cofP = zeros(size(L,1),nbrvar);
@@ -147,19 +151,21 @@ while line <= size(L,1)
     line = line+1;
 end
 
-%Etape 6
+% Etape 6
 cofP = URP(cofP,nbrvar);
 cofN = URP(cofN,nbrvar);
-
+% pour effectuer un ET logique
 cofP(:,val) = ones(size(cofP,1),1);
 cofN(:,val) = ones(size(cofN,1),1)*2;
-
+% pour effectuer un OU logique
+% j'effectue les vérification suivant afin d'éviter les warning d'execution
+% pendant la concaténation verticale.
 if isempty(cofP)
     comp = cofN;
 elseif isempty(cofN)
     comp = cofP;
 else
-    comp = [cofP;cofN];
+    comp = [cofP;cofN]; % concaténation verticale des 2 matrices.
 end
 return;
 end
