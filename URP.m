@@ -45,7 +45,7 @@ if size(L,1) == 1
                 m= m+1;
         end
     end
-
+end
 % Etape 4
 % check if f is biforme
 % bif = ones(size(L,1),1);
